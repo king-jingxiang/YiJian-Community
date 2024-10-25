@@ -8,7 +8,7 @@ from functools import partial
 from datasets import Dataset
 
 # 常量定义
-DEEPSEEK_API_KEY = "sk-9ca9cbafdf4c48e0ac75409ea636f636"
+DEEPSEEK_API_KEY = ""
 DEEPSEEK_API_URL = "https://api.deepseek.com/chat/completions"
 BASE_PROMPT = """
 我正在编写一本小说，小说的场景需要一幅配图。请根据我提供的图片描述生成一条用于文生图模型的提示词。提示词应具备清晰的结构，并对图片的主体和细节进行适当的扩展和优化。以下是具体的要求：
