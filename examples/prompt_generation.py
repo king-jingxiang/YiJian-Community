@@ -3,6 +3,7 @@ from datasets import Dataset
 import requests
 from typing import List, Dict, Tuple
 
+import os
 # 设置DeepSeek API密钥
 DEEPSEEK_API_KEY = os.environ.get('DEEPSEEK_API_KEY')
 DEEPSEEK_API_URL = "https://api.deepseek.com/chat/completions"

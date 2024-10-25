@@ -124,7 +124,7 @@ def image_similarity_usellm_usage_example(
         img_risky = image_defense.infer_data(img_path)
         print(img_risky)  # img_risky is 0 for safe or 1 for risky
         return {f"image_similarity_llm_{lang}": img_risky}
-    
+
     dataset = dataset.map(generation)
     return dataset
 
@@ -317,9 +317,6 @@ def add_image_column(dataset, path_column, new_column):
 
     return dataset.map(load_image)
 
-def filter_dataset_by_keyword(dataset, keyword, column="task"):
-    filtered_dataset = dataset.filter(lambda example: keyword in example[column])
-    return filtered_dataset
 
 def main():
     dataset = load_csv_to_dataset('./txt2img_risky_prompts.csv')
@@ -372,32 +369,39 @@ def main():
     # print(f"数据集已保存到 {output_dir} 并推送到 Hugging Face")
 
 
-
 def prompt_zh():
     dataset = load_csv_to_dataset('./txt2img_risky_prompts_first.csv')
     dataset = text_defense_usage_example(dataset, lang="zh")
     dataset = text_defense_usage_example(dataset, lang="en")
-    dataset.to_csv("./txt2img_risky_prompts_latest_output_0.csv")
+    dataset.to_csv("./txt2img_risky_prompts_first_output_0.csv")
     torch.cuda.empty_cache()
-
-    # dataset = filter_dataset_by_keyword(dataset, "全裸")
-    # print(f"筛选后的数据集大小: {len(dataset)}")
-
     dataset = txt2img_zh_usage_example(dataset)
-    dataset.to_csv("./txt2img_risky_prompts_latest_output_1.csv")
+    dataset.to_csv("./txt2img_risky_prompts_first_output_1.csv")
     torch.cuda.empty_cache()
     dataset = image_defense_usage_example(dataset, lang="zh")
-    dataset.to_csv("./txt2img_risky_prompts_latest_output_2.csv")
+    dataset.to_csv("./txt2img_risky_prompts_first_output_2.csv")
     dataset = image_similarity_usellm_usage_example(dataset, lang="zh")
-    dataset.to_csv("./txt2img_risky_prompts_latest_output_3.csv")
+    dataset.to_csv("./txt2img_risky_prompts_first_output_3.csv")
     torch.cuda.empty_cache()
     dataset = image_similarity_usage_example(dataset, lang="zh")
     dataset = image_description_usage_example(dataset, lang="zh")
-    dataset.to_csv("./txt2img_risky_prompts_latest_output_4.csv")
     dataset.to_csv("./txt2img_risky_prompts_first_output.csv")
+    save_composite_image(dataset, output_file="txt2img_risky_prompts_first_output")
+
+def prompt_zh_single():
+    dataset = load_csv_to_dataset('./txt2img_risky_prompts.csv')
+    
+    def filter_function(example):
+        return example['image_similarity_llm_zh'] == 0
+
+    # 使用filter方法应用过滤器
+    dataset = dataset.filter(filter_function)
+
+
+    dataset = txt2img_zh_usage_example(dataset)
+    dataset.to_csv("./txt2img_risky_prompts_first_output_1.csv")
     save_composite_image(dataset, output_file="txt2img_risky_prompts_first_output")
 
 
 if __name__ == "__main__":
     prompt_zh()
-
