@@ -56,7 +56,7 @@ def txt2img_zh_usage_example(dataset, txt2img_zh_model="Kwai-Kolors/Kolors-diffu
         dataset=dataset,
         prompt_column="prompt_zh",
         image_column="image_zh",
-        batch_size=1,
+        batch_size=2,
         guidance_scale=5.0,
         num_inference_steps=50,
     )

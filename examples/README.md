@@ -26,4 +26,4 @@ pip install torch==2.4.0 \
     vllm-flash-attn==2.6.1
 
 pip install yijian-community
-````
+```
